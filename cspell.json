@@ -1,0 +1,15 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [],
+  "flagWords": [],
+  "ignorePaths": [
+    ".github/workflows/**",
+    ".vscode/**",
+    "node_modules/**",
+    "package-lock.json",
+    "package.json",
+    ".storybook/**",
+    "next.config.js"
+  ]
+}

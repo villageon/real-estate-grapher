@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-recommended", "stylelint-config-prettier"],
+  "plugins": ["stylelint-order"],
+  "overrides": [
+    {
+      "files": ["src/**/*.{ts,jsx,tsx}"],
+      "customSyntax": "@stylelint/postcss-css-in-js"
+    }
+  ],
+  "rules": {
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-alphabetical-order": true,
+    "function-no-unknown": null
+  }
+}

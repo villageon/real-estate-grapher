@@ -1,0 +1,3 @@
+node_modules/
+src/pages/_document.tsx
+next.config.js
