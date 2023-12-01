@@ -28,7 +28,8 @@
      */
      "import/extensions": ["error", "never", {
       "png": "always",
-      "css": "always"
+      "css": "always",
+      "svg": "always"
     }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
