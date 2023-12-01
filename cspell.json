@@ -1,7 +1,9 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": [],
+  "words": [
+    "landit"
+  ],
   "flagWords": [],
   "ignorePaths": [
     ".github/workflows/**",
@@ -10,6 +12,8 @@
     "package-lock.json",
     "package.json",
     ".storybook/**",
-    "next.config.js"
+    "next.config.js",
+    ".stylelintrc.json",
+    "cspell.json"
   ]
 }
