@@ -8,8 +8,6 @@ const HeaderContainer = styled('div')`
   display: flex;
   height: 74px;
   padding: 0px 24px 0px 24.51px;
-  position: fixed;
-  top: 0;
   width: 100%;
 `
 
