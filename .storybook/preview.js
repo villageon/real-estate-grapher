@@ -1,8 +1,14 @@
 import '@/styles/globals.css';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider as MUIThemeProvider } from '@mui/material';
+import { theme } from '@/utils/clients/muiThemeClient';
 
 const withThemeProvider = (Story, context) => {
   return (
-        <Story {...context} />
+    <MUIThemeProvider theme={theme}>
+      <CssBaseline />
+      <Story {...context} />
+    </MUIThemeProvider>
   );
 };
 

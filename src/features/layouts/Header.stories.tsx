@@ -7,16 +7,14 @@ const meta: Meta = {
   component: Header,
   decorators: [
     (Story) => (
-      <>
+      <div
+        style={{
+          backgroundColor: bgColor.black,
+          height: '100vh'
+        }}
+      >
         <Story />
-        <div
-          style={{
-            backgroundColor: bgColor.black,
-            marginTop: '74px',
-            height: '1000px'
-          }}
-         />
-      </>
+      </div>
     )
   ]
 }
