@@ -1,7 +1,14 @@
 import styled from '@emotion/styled'
 import Head from 'next/head'
-import { Header } from '@/features/layouts'
+import { Footer, Header } from '@/features/layouts'
 import { bgColor } from '@/utils/clients/themeClient'
+
+const Main = styled('main')`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+`
 
 const ContentContainer = styled('div')`
   background:
@@ -9,7 +16,7 @@ const ContentContainer = styled('div')`
     ${bgColor.black} 50% / cover no-repeat;
   background-blend-mode: normal;
   display: flex;
-  height: calc(100vh - 74px);
+  height: 100%;
   justify-content: center;
   position: relative;
   width: 100%;
@@ -28,10 +35,11 @@ const Home = () => {
         {/* TODO: 指定のファビコンに修正する必要あり */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <Main>
         <Header />
         <ContentContainer />
-      </main>
+        <Footer />
+      </Main>
     </>
   )
 }
