@@ -1,17 +1,11 @@
 import styled from '@emotion/styled'
 import Head from 'next/head'
-import { Header } from '@/features/layouts'
-import { bgColor } from '@/utils/clients/themeClient'
+import { Footer, Header, Main } from '@/features/layouts'
 
-const ContentContainer = styled('div')`
-  background:
-    url('/images/background_image.png'),
-    ${bgColor.black} 50% / cover no-repeat;
-  background-blend-mode: normal;
+const MainContainer = styled('main')`
   display: flex;
-  height: calc(100vh - 74px);
-  justify-content: center;
-  position: relative;
+  flex-direction: column;
+  height: 100vh;
   width: 100%;
 `
 
@@ -25,13 +19,14 @@ const Home = () => {
           content="不動産取引をグラフ表記するアプリケーション"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* TODO: 指定のファビコンに修正する必要あり */}
+        {/* TODO: 指定のファビコンの提示があれば修正する */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <MainContainer>
         <Header />
-        <ContentContainer />
-      </main>
+        <Main />
+        <Footer />
+      </MainContainer>
     </>
   )
 }
