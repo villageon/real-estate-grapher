@@ -6,15 +6,11 @@ import {
   lineHeight
 } from '@/utils/clients/themeClient'
 
-/**
- * 統一したタイトルのレイアウトを実装するために設置
- * 使用ファイルでインポートし必要であれば上書きでレイアウトを調整すること
- */
 export const BaseText = styled('div')`
   color: ${fontColor.black};
   font-size: ${fontSize.medium};
   font-weight: ${fontWeight.normal};
-  line-height: ${lineHeight.medium};
+  line-height: ${lineHeight.large};
   white-space: pre-line;
   word-break: break-all;
 
@@ -60,7 +56,7 @@ export const BaseText = styled('div')`
   &.-xxxl {
     font-size: ${fontSize.xxxl};
   }
-  &.-line-height-large {
-    line-height: ${lineHeight.large};
+  &.-line-height-medium {
+    line-height: ${lineHeight.medium};
   }
 `

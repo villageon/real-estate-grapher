@@ -3,7 +3,7 @@ import { Header } from './Header'
 import { bgColor } from '@/utils/clients/themeClient'
 
 const meta: Meta = {
-  title: 'Features/Layout',
+  title: 'Features/Layouts',
   component: Header,
   decorators: [
     (Story) => (

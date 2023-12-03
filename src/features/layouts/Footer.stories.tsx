@@ -3,7 +3,7 @@ import { Footer } from './Footer'
 import { bgColor } from '@/utils/clients/themeClient'
 
 const meta: Meta = {
-  title: 'Features/Layout',
+  title: 'Features/Layouts',
   component: Footer,
   decorators: [
     (Story) => (
