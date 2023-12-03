@@ -51,7 +51,7 @@ const CustomTextField = styled(TextField)`
 `
 
 interface CustomSelectFormProps extends Omit<TextFieldProps, 'onChange'> {
-  value?: string
+  value?: number
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -74,8 +74,7 @@ export const InputSelect = ({
   icon,
   value,
   options,
-  disabled = false,
-  defaultValue = ''
+  disabled = false
 }: SelectFormProps) => {
   return (
     <InputSelectContainer>
@@ -94,7 +93,6 @@ export const InputSelect = ({
         error={error}
         {...register}
         onChange={onChange}
-        defaultValue={defaultValue}
         SelectProps={{
           displayEmpty: true,
           renderValue: () => {

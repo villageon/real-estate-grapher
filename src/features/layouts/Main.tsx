@@ -1,9 +1,12 @@
 import styled from '@emotion/styled'
+import useSWR from 'swr'
 import { bgColor } from '@/utils/clients/themeClient'
 import { BaseText } from '@/utils/themes'
 import IconChart from '@/utils/assets/icon_chart.svg'
 import { Divider } from '@/components/Dividers'
 import { Form } from '@/features/components/Form'
+import { ApiEndpoint } from '@/utils/enums'
+import { PrefecturesResponse } from '@/utils/types/form'
 
 const ContentContainer = styled('div')`
   background:
@@ -41,6 +44,14 @@ const ChartArea = styled('div')`
 `
 
 export const Main = () => {
+  const { data: prefectures } = useSWR<PrefecturesResponse>(
+    ApiEndpoint.PREFECTURES
+  )
+  const prefOptions = prefectures?.result.map((prefecture) => ({
+    value: prefecture.prefCode,
+    label: prefecture.prefName
+  }))
+
   return (
     <ContentContainer>
       <div>
@@ -58,7 +69,7 @@ export const Main = () => {
 
       <ContentWrapper>
         <ChartArea>チャート表示エリア</ChartArea>
-        <Form />
+        {prefOptions && <Form prefOptions={prefOptions} />}
       </ContentWrapper>
     </ContentContainer>
   )

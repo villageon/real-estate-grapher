@@ -1,11 +1,14 @@
 import '@/styles/globals.css';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { theme } from '@/utils/clients/muiThemeClient';
+import { RecoilRoot } from 'recoil';
 
 const withThemeProvider = (Story, context) => {
   return (
     <MUIThemeProvider theme={theme}>
+      <RecoilRoot>
       <Story {...context} />
+      </RecoilRoot>
     </MUIThemeProvider>
   );
 };
