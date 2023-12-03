@@ -6,10 +6,6 @@ import {
   lineHeight
 } from '@/utils/clients/themeClient'
 
-/**
- * 統一したタイトルのレイアウトを実装するために設置
- * 使用ファイルでインポートし必要であれば上書きでレイアウトを調整すること
- */
 export const BaseText = styled('div')`
   color: ${fontColor.black};
   font-size: ${fontSize.medium};
