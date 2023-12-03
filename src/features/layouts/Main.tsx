@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import useSWR from 'swr'
+import { useMemo, useState } from 'react'
 import { bgColor } from '@/utils/clients/themeClient'
 import { BaseText } from '@/utils/themes'
 import IconChart from '@/utils/assets/icon_chart.svg'
 import { Divider } from '@/components/Dividers'
 import { Form } from '@/features/components/Form'
 import { ApiEndpoint } from '@/utils/enums'
-import { PrefecturesResponse } from '@/utils/types/form'
+import { EstateData, PrefecturesResponse } from '@/utils/types/form'
 
 const ContentContainer = styled('div')`
   background:
@@ -44,13 +45,18 @@ const ChartArea = styled('div')`
 `
 
 export const Main = () => {
+  const [estateData, setEstateData] = useState<EstateData>()
+  console.log(estateData, 'estateData')
+
   const { data: prefectures } = useSWR<PrefecturesResponse>(
     ApiEndpoint.PREFECTURES
   )
-  const prefOptions = prefectures?.result.map((prefecture) => ({
-    value: prefecture.prefCode,
-    label: prefecture.prefName
-  }))
+  const prefOptions = useMemo(() => {
+    return prefectures?.result.map((prefecture) => ({
+      value: prefecture.prefCode,
+      label: prefecture.prefName
+    }))
+  }, [prefectures])
 
   return (
     <ContentContainer>
@@ -69,7 +75,13 @@ export const Main = () => {
 
       <ContentWrapper>
         <ChartArea>チャート表示エリア</ChartArea>
-        {prefOptions && <Form prefOptions={prefOptions} />}
+        {prefOptions && (
+          <Form
+            prefOptions={prefOptions}
+            estateData={estateData}
+            setEstateData={setEstateData}
+          />
+        )}
       </ContentWrapper>
     </ContentContainer>
   )

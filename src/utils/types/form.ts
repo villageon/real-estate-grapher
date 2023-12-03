@@ -34,3 +34,10 @@ export type EstatePriceResponse = {
     }>
   }
 }
+
+export type EstateData = {
+  year: number
+  prefName: string
+  displayTypeName: string
+  estatePrice: number
+}

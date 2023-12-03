@@ -4,6 +4,7 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState
 } from 'react'
 import { bgColor } from '@/utils/clients/themeClient'
@@ -16,6 +17,7 @@ import IconMap from '@/utils/assets/icon_map.svg'
 import IconCalendar from '@/utils/assets/icon_calendar.svg'
 import IconShapes from '@/utils/assets/icon_shapes.svg'
 import {
+  EstateData,
   EstatePriceRequest,
   EstatePriceResponse,
   OptionProps
@@ -42,17 +44,22 @@ const FormWrapper = styled('div')`
 
 type FormProps = {
   prefOptions: OptionProps[]
+  estateData?: EstateData
+  setEstateData: Dispatch<SetStateAction<EstateData | undefined>>
 }
 
-export const Form = ({ prefOptions }: FormProps) => {
+export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
   const [prefCode, setPrefCode] = useState<number>(OptionsDefault.PREF_CODE)
   const [year, setYear] = useState<number>(OptionsDefault.YEAR)
   const [displayType, setDisplayType] = useState<number>(
     OptionsDefault.DISPLAY_TYPE
   )
-  const [estateData, setEstateData] = useState<EstatePriceResponse['result']>()
-
   const { downloadData } = useDownloadData()
+
+  const displayTypeName = useMemo(() => {
+    return DISPLAY_TYPE_OPTIONS.find((option) => option.value === displayType)
+      ?.label
+  }, [displayType])
 
   const handleSubmit = useCallback(
     async ({
@@ -70,9 +77,16 @@ export const Form = ({ prefOptions }: FormProps) => {
         ApiEndpoint.ESTATE_PRICE,
         { params }
       )
-      setEstateData(res.data.result)
+
+      if (!displayTypeName) return
+      setEstateData({
+        year: res.data.result.years[0].year,
+        prefName: res.data.result.prefName,
+        displayTypeName,
+        estatePrice: res.data.result.years[0].value
+      })
     },
-    [year, prefCode, displayType]
+    [year, prefCode, displayType, setEstateData, displayTypeName]
   )
 
   const handleChange = useCallback(
@@ -86,7 +100,7 @@ export const Form = ({ prefOptions }: FormProps) => {
   )
 
   const onClickDownload = () => {
-    downloadData(displayType, estateData)
+    downloadData(estateData, displayTypeName)
   }
 
   useEffect(() => {
