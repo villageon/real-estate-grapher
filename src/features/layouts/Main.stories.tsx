@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Main } from './Main'
 
 const meta: Meta = {
-  title: 'Features/Layout',
+  title: 'Features/Layouts',
   component: Main
 }
 

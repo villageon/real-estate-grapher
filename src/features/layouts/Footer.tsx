@@ -29,7 +29,7 @@ interface FooterLinkProps {
 
 const FooterLink = ({ text }: FooterLinkProps) => (
   <IconTextPair>
-    <BaseText className="-white -small -line-height-large">{text}</BaseText>
+    <BaseText className="-white -small">{text}</BaseText>
     <IconFolder />
   </IconTextPair>
 )
@@ -41,9 +41,7 @@ export const Footer = () => {
         <FooterLink text="利用規約" />
         <FooterLink text="プライバシーポリシー" />
       </FooterLeftWrapper>
-      <BaseText className="-white -small -line-height-large -end">
-        © 2023 Landit Inc.
-      </BaseText>
+      <BaseText className="-white -small -end">© 2023 Landit Inc.</BaseText>
     </FooterContainer>
   )
 }

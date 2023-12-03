@@ -5,6 +5,9 @@ export const theme = createTheme({
     error: {
       main: '#E8334A',
       light: '#FFE3E3'
+    },
+    primary: {
+      main: '#0071C1'
     }
   }
 })
