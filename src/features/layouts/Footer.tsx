@@ -19,7 +19,7 @@ const IconTextPair = styled('div')`
   gap: 8px;
 `
 
-const FooterLeftWrapper = styled('div')`
+const FooterLeft = styled('div')`
   display: flex;
   gap: 24px;
 `
@@ -38,10 +38,10 @@ const FooterLink = ({ text }: FooterLinkProps) => (
 export const Footer = () => {
   return (
     <FooterContainer>
-      <FooterLeftWrapper>
+      <FooterLeft>
         <FooterLink text="利用規約" />
         <FooterLink text="プライバシーポリシー" />
-      </FooterLeftWrapper>
+      </FooterLeft>
       <BaseText className="-white -small -end">© 2023 Landit Inc.</BaseText>
     </FooterContainer>
   )

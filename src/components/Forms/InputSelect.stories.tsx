@@ -36,7 +36,7 @@ export const InputSelectYear: Story = {
     icon: <IconMap />,
     options: yearOptions,
     defaultValue: '2021年',
-    value: '2021',
+    value: 2021,
     disabled: false
   }
 }
@@ -47,7 +47,7 @@ export const InputSelectPrefecture: Story = {
     icon: <IconCalendar />,
     options: prefectureOptions,
     defaultValue: '北海道',
-    value: '1',
+    value: 1,
     disabled: false
   }
 }

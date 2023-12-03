@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import useSWR from 'swr'
+import { useMemo, useState } from 'react'
 import { bgColor } from '@/utils/clients/themeClient'
 import { BaseText } from '@/utils/themes'
 import IconChart from '@/utils/assets/icon_chart.svg'
 import { Divider } from '@/components/Dividers'
-import { Form } from '@/features/components/Form'
+import { ChartArea, Form } from '@/features/components'
 import { ApiEndpoint } from '@/utils/enums'
-import { PrefecturesResponse } from '@/utils/types/form'
+import { EstateData, PrefecturesResponse } from '@/utils/types/form'
 
 const ContentContainer = styled('div')`
   background:
@@ -21,14 +22,14 @@ const ContentContainer = styled('div')`
   width: 100%;
 `
 
-const TitleWrapper = styled('div')`
+const Title = styled('div')`
   align-items: end;
   display: flex;
   gap: 16px;
   margin-bottom: 16px;
 `
 
-const IconTextWrapper = styled('div')`
+const IconText = styled('div')`
   align-items: center;
   display: flex;
   gap: 8px;
@@ -39,37 +40,43 @@ const ContentWrapper = styled('div')`
   flex-grow: 1;
 `
 
-const ChartArea = styled('div')`
-  flex-grow: 1;
-`
-
 export const Main = () => {
+  const [estateData, setEstateData] = useState<EstateData>()
+
   const { data: prefectures } = useSWR<PrefecturesResponse>(
     ApiEndpoint.PREFECTURES
   )
-  const prefOptions = prefectures?.result.map((prefecture) => ({
-    value: prefecture.prefCode,
-    label: prefecture.prefName
-  }))
+  const prefOptions = useMemo(() => {
+    return prefectures?.result.map((prefecture) => ({
+      value: prefecture.prefCode,
+      label: prefecture.prefName
+    }))
+  }, [prefectures])
 
   return (
     <ContentContainer>
       <div>
-        <TitleWrapper>
-          <IconTextWrapper>
+        <Title>
+          <IconText>
             <IconChart />
             <BaseText className="-white -xxxl -line-height-medium">
               取引価格
             </BaseText>
-          </IconTextWrapper>
+          </IconText>
           <BaseText className="-white">※取引面積1㎡あたり</BaseText>
-        </TitleWrapper>
+        </Title>
         <Divider />
       </div>
 
       <ContentWrapper>
-        <ChartArea>チャート表示エリア</ChartArea>
-        {prefOptions && <Form prefOptions={prefOptions} />}
+        <ChartArea estateData={estateData} />
+        {prefOptions && (
+          <Form
+            prefOptions={prefOptions}
+            estateData={estateData}
+            setEstateData={setEstateData}
+          />
+        )}
       </ContentWrapper>
     </ContentContainer>
   )
