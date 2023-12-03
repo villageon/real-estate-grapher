@@ -21,7 +21,7 @@ import {
   OptionProps
 } from '@/utils/types/form'
 import { axios } from '@/utils/clients/axiosClient'
-import { ApiEndpoint } from '@/utils/enums'
+import { ApiEndpoint, OptionsDefault } from '@/utils/enums'
 import { useDownloadData } from '@/utils/hooks'
 
 const FormContainer = styled('div')`
@@ -45,9 +45,11 @@ type FormProps = {
 }
 
 export const Form = ({ prefOptions }: FormProps) => {
-  const [prefCode, setPrefCode] = useState<number>(13)
-  const [year, setYear] = useState<number>(2021)
-  const [displayType, setDisplayType] = useState<number>(1)
+  const [prefCode, setPrefCode] = useState<number>(OptionsDefault.PREF_CODE)
+  const [year, setYear] = useState<number>(OptionsDefault.YEAR)
+  const [displayType, setDisplayType] = useState<number>(
+    OptionsDefault.DISPLAY_TYPE
+  )
   const [estateData, setEstateData] = useState<EstatePriceResponse['result']>()
 
   const { downloadData } = useDownloadData()
