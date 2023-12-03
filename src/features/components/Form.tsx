@@ -1,17 +1,28 @@
 import styled from '@emotion/styled'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import { bgColor } from '@/utils/clients/themeClient'
 import { BaseText } from '@/utils/themes'
 import { Button } from '@/components/Buttons'
 import { Divider } from '@/components/Dividers'
 import { InputRadio, InputSelect } from '@/components/Forms'
-import {
-  DISPLAY_TYPE_OPTIONS,
-  PREFECTURES_OPTIONS,
-  YEAR_OPTIONS
-} from '@/utils/constants'
+import { DISPLAY_TYPE_OPTIONS, YEAR_OPTIONS } from '@/utils/constants'
 import IconMap from '@/utils/assets/icon_map.svg'
 import IconCalendar from '@/utils/assets/icon_calendar.svg'
 import IconShapes from '@/utils/assets/icon_shapes.svg'
+import {
+  EstatePriceRequest,
+  EstatePriceResponse,
+  OptionProps
+} from '@/utils/types/form'
+import { axios } from '@/utils/clients/axiosClient'
+import { ApiEndpoint } from '@/utils/enums'
+import { useDownloadData } from '@/utils/hooks'
 
 const FormContainer = styled('div')`
   background-color: ${bgColor.whiteGray};
@@ -29,10 +40,57 @@ const FormWrapper = styled('div')`
   gap: 24px;
 `
 
-export const Form = () => {
+type FormProps = {
+  prefOptions: OptionProps[]
+}
+
+export const Form = ({ prefOptions }: FormProps) => {
+  const [prefCode, setPrefCode] = useState<number>(13)
+  const [year, setYear] = useState<number>(2021)
+  const [displayType, setDisplayType] = useState<number>(1)
+  const [estateData, setEstateData] = useState<EstatePriceResponse['result']>()
+
+  const { downloadData } = useDownloadData()
+
+  const handleSubmit = useCallback(
+    async ({
+      selectedYear = year,
+      selectedPrefCode = prefCode,
+      selectedDisplayType = displayType
+    }) => {
+      const params: EstatePriceRequest = {
+        year: selectedYear,
+        prefCode: selectedPrefCode,
+        cityCode: '-',
+        displayType: selectedDisplayType
+      }
+      const res = await axios.get<EstatePriceResponse>(
+        ApiEndpoint.ESTATE_PRICE,
+        { params }
+      )
+      setEstateData(res.data.result)
+    },
+    [year, prefCode, displayType]
+  )
+
+  const handleChange = useCallback(
+    (setter: Dispatch<SetStateAction<number>>) =>
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedValue = Number(event.target.value)
+        setter(selectedValue)
+        handleSubmit({ [event.target.name]: selectedValue })
+      },
+    [handleSubmit]
+  )
+
   const onClickDownload = () => {
-    console.log('ダウンロードしました')
+    downloadData(displayType, estateData)
   }
+
+  useEffect(() => {
+    handleSubmit({})
+  }, [handleSubmit])
+
   return (
     <FormContainer>
       <FormWrapper>
@@ -42,23 +100,24 @@ export const Form = () => {
           label="年度"
           icon={<IconMap />}
           options={YEAR_OPTIONS}
-          defaultValue="2021年"
-          value="2021"
+          onChange={handleChange(setYear)}
+          value={year}
         />
         <Divider />
         <InputSelect
           label="場所"
           icon={<IconCalendar />}
-          options={PREFECTURES_OPTIONS}
-          defaultValue="東京都"
-          value="13"
+          options={prefOptions}
+          onChange={handleChange(setPrefCode)}
+          value={prefCode}
         />
         <Divider />
         <InputRadio
           label="種類"
           icon={<IconShapes />}
           options={DISPLAY_TYPE_OPTIONS}
-          value="1"
+          onChange={handleChange(setDisplayType)}
+          value={displayType}
         />
       </FormWrapper>
       <Button onClick={onClickDownload}>データをダウンロード</Button>

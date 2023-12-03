@@ -42,7 +42,7 @@ export type InputRadioProps = {
   label?: string
   type?: 'row' | 'twoRow' | 'column'
   size?: 'small' | 'medium'
-  value?: string
+  value?: number
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   register?: UseFormRegisterReturn
   options: OptionProps[]

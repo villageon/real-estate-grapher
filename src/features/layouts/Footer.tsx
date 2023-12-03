@@ -6,6 +6,7 @@ import IconFolder from '@/utils/assets/icon_folder.svg'
 const FooterContainer = styled('div')`
   align-items: flex-start;
   background-color: ${bgColor.black};
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: space-between;
   padding: 16px 32px;
