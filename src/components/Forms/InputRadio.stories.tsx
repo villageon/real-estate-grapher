@@ -33,6 +33,6 @@ export const InputRadioDisplayType: Story = {
     label: '種類',
     icon: <IconShapes />,
     options: DisplayTypeOptions,
-    value: '1'
+    value: 1
   }
 }

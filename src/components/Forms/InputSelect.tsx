@@ -16,7 +16,7 @@ const InputSelectContainer = styled('div')`
   display: flex;
   gap: 24px;
 `
-const LabelWrapper = styled('div')`
+const Label = styled('div')`
   align-items: center;
   display: flex;
   flex-shrink: 0;
@@ -79,10 +79,10 @@ export const InputSelect = ({
   return (
     <InputSelectContainer>
       {label || icon ? (
-        <LabelWrapper>
+        <Label>
           {icon}
           <BaseText>{label}</BaseText>
-        </LabelWrapper>
+        </Label>
       ) : null}
       <CustomTextField
         value={value}

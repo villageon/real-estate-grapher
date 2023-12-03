@@ -36,7 +36,7 @@ export type EstatePriceResponse = {
 }
 
 export type EstateData = {
-  year: number
+  year: string
   prefName: string
   displayTypeName: string
   estatePrice: number

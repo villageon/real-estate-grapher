@@ -79,11 +79,12 @@ export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
       )
 
       if (!displayTypeName) return
+      const data = res.data.result
       setEstateData({
-        year: res.data.result.years[0].year,
-        prefName: res.data.result.prefName,
+        year: `${data.years[0].year}年`,
+        prefName: data.prefName,
         displayTypeName,
-        estatePrice: res.data.result.years[0].value
+        estatePrice: data.years[0].value
       })
     },
     [year, prefCode, displayType, setEstateData, displayTypeName]

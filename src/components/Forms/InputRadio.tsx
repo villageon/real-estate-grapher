@@ -16,7 +16,7 @@ const InputRadioContainer = styled(FormControl)`
   gap: 24px;
 `
 
-const LabelWrapper = styled('div')`
+const Label = styled('div')`
   align-items: center;
   display: flex;
   flex-shrink: 0;
@@ -72,10 +72,10 @@ export const InputRadio = ({
   return (
     <InputRadioContainer>
       {label || icon ? (
-        <LabelWrapper>
+        <Label>
           {icon}
           <BaseText>{label}</BaseText>
-        </LabelWrapper>
+        </Label>
       ) : null}
       <StyledRadioGroup row={type === 'row'} aria-labelledby={id}>
         {options.map((option) => (
