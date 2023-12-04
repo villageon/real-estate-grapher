@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js'
+import { CircularProgress } from '@mui/material'
 import IconMapWhite from '@/utils/assets/icon_map_white.svg'
 import IconCalendarWhite from '@/utils/assets/icon_calendar_white.svg'
 import IconShapesWhite from '@/utils/assets/icon_shapes_white.svg'
@@ -22,6 +23,7 @@ const ChartContainer = styled('div')`
   flex-grow: 1;
   gap: 80px;
   justify-content: center;
+  position: relative;
 `
 const ChartTitle = styled('div')`
   align-items: center;
@@ -42,6 +44,13 @@ const ChartContent = styled('div')`
   height: 440px !important;
   width: 660px !important;
   width: auto;
+`
+
+const StyledCircularProgress = styled(CircularProgress)`
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -121,9 +130,10 @@ const chartOptions = {
 
 type ChartAreaProps = {
   estateData?: EstateData
+  isLoading: boolean
 }
 
-export const ChartArea = ({ estateData }: ChartAreaProps) => {
+export const ChartArea = ({ estateData, isLoading }: ChartAreaProps) => {
   const data = createChartData(estateData)
 
   return (
@@ -149,6 +159,8 @@ export const ChartArea = ({ estateData }: ChartAreaProps) => {
         <BaseText className="-small -white">（円/㎡）</BaseText>
         <Bar data={data} options={chartOptions} />
       </ChartContent>
+
+      {isLoading && <StyledCircularProgress size={100} color="info" />}
     </ChartContainer>
   )
 }

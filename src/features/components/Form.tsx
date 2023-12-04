@@ -47,9 +47,14 @@ const FormWrapper = styled('div')`
 type FormProps = {
   estateData?: EstateData
   setEstateData: Dispatch<SetStateAction<EstateData | undefined>>
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export const Form = ({ estateData, setEstateData }: FormProps) => {
+export const Form = ({
+  estateData,
+  setEstateData,
+  setIsLoading
+}: FormProps) => {
   const [prefCode, setPrefCode] = useState<number>(OptionsDefault.PREF_CODE)
   const [year, setYear] = useState<number>(OptionsDefault.YEAR)
   const [displayType, setDisplayType] = useState<number>(
@@ -63,6 +68,8 @@ export const Form = ({ estateData, setEstateData }: FormProps) => {
       selectedPrefCode = prefCode,
       selectedDisplayType = displayType
     }) => {
+      setIsLoading(true)
+
       const paramsTargetPref: EstatePriceRequest = {
         year: selectedYear,
         prefCode: selectedPrefCode,
@@ -100,8 +107,9 @@ export const Form = ({ estateData, setEstateData }: FormProps) => {
         estatePrice: resPrefData.years[0].value,
         estatePriceAve: resPrefAverageData.years[0].value
       })
+      setIsLoading(false)
     },
-    [year, prefCode, displayType, setEstateData]
+    [year, prefCode, displayType, setEstateData, setIsLoading]
   )
 
   const handleChange = useCallback(

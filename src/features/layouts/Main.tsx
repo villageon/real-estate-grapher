@@ -40,6 +40,7 @@ const ContentWrapper = styled('div')`
 
 export const Main = () => {
   const [estateData, setEstateData] = useState<EstateData>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (
     <ContentContainer>
@@ -57,8 +58,12 @@ export const Main = () => {
       </div>
 
       <ContentWrapper>
-        <ChartArea estateData={estateData} />
-        <Form estateData={estateData} setEstateData={setEstateData} />
+        <ChartArea estateData={estateData} isLoading={isLoading} />
+        <Form
+          estateData={estateData}
+          setEstateData={setEstateData}
+          setIsLoading={setIsLoading}
+        />
       </ContentWrapper>
     </ContentContainer>
   )
