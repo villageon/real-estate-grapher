@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js'
+import type { TooltipItem, Scale } from 'chart.js'
 import { CircularProgress } from '@mui/material'
 import IconMapWhite from '@/utils/assets/icon_map_white.svg'
 import IconCalendarWhite from '@/utils/assets/icon_calendar_white.svg'
@@ -52,6 +53,9 @@ const StyledCircularProgress = styled(CircularProgress)`
   top: 50%;
   transform: translate(-50%, -50%);
 `
+const StyledBaseText = styled(BaseText)`
+  margin-left: 52px;
+`
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -79,10 +83,10 @@ const chartOptions = {
     },
     tooltip: {
       callbacks: {
-        title(tooltipItems: any) {
+        title(tooltipItems: TooltipItem<'bar'>[]) {
           return tooltipItems[0].label
         },
-        label(tooltipItem: any) {
+        label(tooltipItem: TooltipItem<'bar'>) {
           const value = tooltipItem.formattedValue
           return `${value} 円/㎡`
         }
@@ -106,9 +110,12 @@ const chartOptions = {
       }
     },
     y: {
+      afterFit(scaleInstance: Scale) {
+        scaleInstance.width = 100 // eslint-disable-line no-param-reassign
+      },
       ticks: {
-        callback(value: any) {
-          return `${new Intl.NumberFormat().format(value)}  `
+        callback(value: number | string) {
+          return `${new Intl.NumberFormat().format(Number(value))}  `
         },
         color: 'white',
         font: {
@@ -156,7 +163,7 @@ export const ChartArea = ({ estateData, isLoading }: ChartAreaProps) => {
       </ChartTitle>
 
       <ChartContent>
-        <BaseText className="-small -white">（円/㎡）</BaseText>
+        <StyledBaseText className="-small -white">（円/㎡）</StyledBaseText>
         <Bar data={data} options={chartOptions} />
       </ChartContent>
 
