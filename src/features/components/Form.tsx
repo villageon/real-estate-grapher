@@ -4,7 +4,6 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
-  useMemo,
   useState
 } from 'react'
 import { bgColor } from '@/utils/clients/themeClient'
@@ -12,15 +11,18 @@ import { BaseText } from '@/utils/themes'
 import { Button } from '@/components/Buttons'
 import { Divider } from '@/components/Dividers'
 import { InputRadio, InputSelect } from '@/components/Forms'
-import { DISPLAY_TYPE_OPTIONS, YEAR_OPTIONS } from '@/utils/constants'
+import {
+  DISPLAY_TYPE_OPTIONS,
+  PREFECTURES_OPTIONS,
+  YEAR_OPTIONS
+} from '@/utils/constants'
 import IconMap from '@/utils/assets/icon_map.svg'
 import IconCalendar from '@/utils/assets/icon_calendar.svg'
 import IconShapes from '@/utils/assets/icon_shapes.svg'
 import {
   EstateData,
   EstatePriceRequest,
-  EstatePriceResponse,
-  OptionProps
+  EstatePriceResponse
 } from '@/utils/types/form'
 import { axios } from '@/utils/clients/axiosClient'
 import { ApiEndpoint, OptionsDefault } from '@/utils/enums'
@@ -43,12 +45,11 @@ const FormWrapper = styled('div')`
 `
 
 type FormProps = {
-  prefOptions: OptionProps[]
   estateData?: EstateData
   setEstateData: Dispatch<SetStateAction<EstateData | undefined>>
 }
 
-export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
+export const Form = ({ estateData, setEstateData }: FormProps) => {
   const [prefCode, setPrefCode] = useState<number>(OptionsDefault.PREF_CODE)
   const [year, setYear] = useState<number>(OptionsDefault.YEAR)
   const [displayType, setDisplayType] = useState<number>(
@@ -56,38 +57,51 @@ export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
   )
   const { downloadData } = useDownloadData()
 
-  const displayTypeName = useMemo(() => {
-    return DISPLAY_TYPE_OPTIONS.find((option) => option.value === displayType)
-      ?.label
-  }, [displayType])
-
-  const handleSubmit = useCallback(
+  const searchEstate = useCallback(
     async ({
       selectedYear = year,
       selectedPrefCode = prefCode,
       selectedDisplayType = displayType
     }) => {
-      const params: EstatePriceRequest = {
+      const paramsTargetPref: EstatePriceRequest = {
         year: selectedYear,
         prefCode: selectedPrefCode,
         cityCode: '-',
         displayType: selectedDisplayType
       }
-      const res = await axios.get<EstatePriceResponse>(
+
+      const paramsAllPref: EstatePriceRequest = {
+        year: selectedYear,
+        prefCode: '-',
+        cityCode: '-',
+        displayType: selectedDisplayType
+      }
+      const resPref = await axios.get<EstatePriceResponse>(
         ApiEndpoint.ESTATE_PRICE,
-        { params }
+        { params: paramsTargetPref }
+      )
+      const resPrefAve = await axios.get<EstatePriceResponse>(
+        ApiEndpoint.ESTATE_PRICE,
+        { params: paramsAllPref }
       )
 
+      const displayTypeName = DISPLAY_TYPE_OPTIONS.find(
+        (option) => option.value === selectedDisplayType
+      )?.label
+
       if (!displayTypeName) return
-      const data = res.data.result
+
+      const resPrefData = resPref.data.result
+      const resPrefAverageData = resPrefAve.data.result
       setEstateData({
-        year: `${data.years[0].year}年`,
-        prefName: data.prefName,
+        year: `${resPrefData.years[0].year}年`,
+        prefName: resPrefData.prefName,
         displayTypeName,
-        estatePrice: data.years[0].value
+        estatePrice: resPrefData.years[0].value,
+        estatePriceAve: resPrefAverageData.years[0].value
       })
     },
-    [year, prefCode, displayType, setEstateData, displayTypeName]
+    [year, prefCode, displayType, setEstateData]
   )
 
   const handleChange = useCallback(
@@ -95,18 +109,22 @@ export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
       (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedValue = Number(event.target.value)
         setter(selectedValue)
-        handleSubmit({ [event.target.name]: selectedValue })
+        searchEstate({ [event.target.name]: selectedValue })
       },
-    [handleSubmit]
+    [searchEstate]
   )
 
   const onClickDownload = () => {
+    const displayTypeName = DISPLAY_TYPE_OPTIONS.find(
+      (option) => option.value === displayType
+    )?.label
+
     downloadData(estateData, displayTypeName)
   }
 
   useEffect(() => {
-    handleSubmit({})
-  }, [handleSubmit])
+    searchEstate({})
+  }, [searchEstate])
 
   return (
     <FormContainer>
@@ -115,6 +133,7 @@ export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
         <Divider />
         <InputSelect
           label="年度"
+          name="selectedYear"
           icon={<IconMap />}
           options={YEAR_OPTIONS}
           onChange={handleChange(setYear)}
@@ -123,14 +142,16 @@ export const Form = ({ prefOptions, estateData, setEstateData }: FormProps) => {
         <Divider />
         <InputSelect
           label="場所"
+          name="selectedPrefCode"
           icon={<IconCalendar />}
-          options={prefOptions}
+          options={PREFECTURES_OPTIONS}
           onChange={handleChange(setPrefCode)}
           value={prefCode}
         />
         <Divider />
         <InputRadio
           label="種類"
+          name="selectedDisplayType"
           icon={<IconShapes />}
           options={DISPLAY_TYPE_OPTIONS}
           onChange={handleChange(setDisplayType)}

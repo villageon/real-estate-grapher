@@ -15,7 +15,7 @@ export type PrefecturesResponse = {
 
 export type EstatePriceRequest = {
   year: number
-  prefCode: number
+  prefCode: number | string
   cityCode: number | string
   displayType: number
 }
@@ -40,4 +40,5 @@ export type EstateData = {
   prefName: string
   displayTypeName: string
   estatePrice: number
+  estatePriceAve: number
 }
