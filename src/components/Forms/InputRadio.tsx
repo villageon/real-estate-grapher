@@ -43,6 +43,7 @@ export type InputRadioProps = {
   type?: 'row' | 'twoRow' | 'column'
   size?: 'small' | 'medium'
   value?: number
+  name?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   register?: UseFormRegisterReturn
   options: OptionProps[]
@@ -57,6 +58,7 @@ export const InputRadio = ({
   icon,
   type = 'column',
   size = 'small',
+  name,
   options,
   onChange,
   register,
@@ -82,6 +84,7 @@ export const InputRadio = ({
           <StyledFormControlLabel
             key={option.value}
             label={option.label}
+            name={name}
             checked={value === option.value}
             control={
               <Radio
