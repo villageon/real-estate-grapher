@@ -99,7 +99,6 @@ export const Form = ({
       if (!displayTypeName) return
 
       const resPrefData = resPref.data.result
-      console.log(resPrefData)
       const resPrefAverageData = resPrefAve.data.result
       setEstateData({
         year: `${resPrefData.years[0].year}年`,
