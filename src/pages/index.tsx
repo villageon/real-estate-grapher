@@ -19,7 +19,7 @@ const Home = () => {
           content="不動産取引をグラフ表記するアプリケーション"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* TODO: 指定のファビコンの提示があれば修正する */}
+        {/* NOTE: ファビコンの提示があれば修正する */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainContainer>

@@ -57,6 +57,10 @@ const StyledBaseText = styled(BaseText)`
   margin-left: 52px;
 `
 
+/**
+ * グラフの設定
+ * NOTE: 複数箇所で利用されるのであれば、共通化として別ファイルに切り出す
+ */
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const createChartData = (estateData?: EstateData) => ({
