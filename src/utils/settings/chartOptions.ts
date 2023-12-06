@@ -1,10 +1,5 @@
 import type { TooltipItem, Scale } from 'chart.js'
-import {
-  fontSize,
-  fontColor,
-  bgColor,
-  fontWeight
-} from '@/utils/clients/themeClient'
+import { fontColor, bgColor, fontWeight } from '@/utils/clients/themeClient'
 
 export const chartOptions = {
   maintainAspectRatio: false,
@@ -30,7 +25,7 @@ export const chartOptions = {
       ticks: {
         color: fontColor.white,
         font: {
-          size: fontSize.large,
+          size: 16,
           weight: fontWeight.bold
         }
       },
@@ -51,7 +46,7 @@ export const chartOptions = {
         },
         color: fontColor.white,
         font: {
-          size: fontSize.small
+          size: 12
         }
       },
       grid: {
