@@ -1,4 +1,10 @@
 import type { TooltipItem, Scale } from 'chart.js'
+import {
+  fontSize,
+  fontColor,
+  bgColor,
+  fontWeight
+} from '@/utils/clients/themeClient'
 
 export const chartOptions = {
   maintainAspectRatio: false,
@@ -22,17 +28,17 @@ export const chartOptions = {
   scales: {
     x: {
       ticks: {
-        color: 'white',
+        color: fontColor.white,
         font: {
-          size: 16,
-          weight: 'bold'
+          size: fontSize.large,
+          weight: fontWeight.bold
         }
       },
       grid: {
         display: false
       },
       border: {
-        color: 'white'
+        color: bgColor.white
       }
     },
     y: {
@@ -43,19 +49,19 @@ export const chartOptions = {
         callback(value: number | string) {
           return `${new Intl.NumberFormat().format(Number(value))}  `
         },
-        color: 'white',
+        color: fontColor.white,
         font: {
-          size: 12
+          size: fontSize.small
         }
       },
       grid: {
         display: true,
         drawOnChartArea: false,
         drawTicks: true,
-        color: 'white'
+        color: bgColor.white
       },
       border: {
-        color: 'white'
+        color: bgColor.white
       }
     }
   }
