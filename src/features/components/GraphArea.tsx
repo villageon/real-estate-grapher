@@ -4,6 +4,7 @@ import { Chart } from 'react-chartjs-2'
 import type { ChartData } from 'chart.js'
 import {
   Chart as ChartJS,
+  BarController,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -65,7 +66,15 @@ type GraphAreaProps = {
   isLoading: boolean
 }
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(
+  BarController,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 export const GraphArea = ({ estateData, isLoading }: GraphAreaProps) => {
   const chartRef = useRef<ChartJS>(null)
