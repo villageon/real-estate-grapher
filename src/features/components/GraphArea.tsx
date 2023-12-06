@@ -131,7 +131,6 @@ export const GraphArea = ({ estateData, isLoading }: GraphAreaProps) => {
           data={chartData}
           options={chartOptions}
         />
-        ;
       </ChartContent>
 
       {isLoading && <StyledCircularProgress size={100} color="info" />}
