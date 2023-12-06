@@ -1,0 +1,1 @@
+export { createGraphGradient } from './createGraph'

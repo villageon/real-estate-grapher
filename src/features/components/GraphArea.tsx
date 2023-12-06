@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
-import { Bar } from 'react-chartjs-2'
+import { useEffect, useRef, useState } from 'react'
+import { Chart } from 'react-chartjs-2'
+import type { ChartData } from 'chart.js'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,13 +11,14 @@ import {
   Tooltip,
   Legend
 } from 'chart.js'
-import type { TooltipItem, Scale } from 'chart.js'
 import { CircularProgress } from '@mui/material'
 import IconMapWhite from '@/utils/assets/icon_map_white.svg'
 import IconCalendarWhite from '@/utils/assets/icon_calendar_white.svg'
 import IconShapesWhite from '@/utils/assets/icon_shapes_white.svg'
 import { EstateData } from '@/utils/types/form'
 import { BaseText } from '@/utils/themes'
+import { chartOptions } from '@/utils/settings'
+import { createGraphGradient } from '@/utils/helpers'
 
 const ChartContainer = styled('div')`
   align-items: center;
@@ -57,95 +60,49 @@ const StyledBaseText = styled(BaseText)`
   margin-left: 52px;
 `
 
-/**
- * グラフの設定
- * NOTE: 複数箇所で利用されるのであれば、共通化として別ファイルに切り出す
- */
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
-
-const createChartData = (estateData?: EstateData) => ({
-  labels: [estateData?.prefName, '全国平均'],
-  datasets: [
-    {
-      data: [estateData?.estatePrice, estateData?.estatePriceAve],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)', // TODO: グラデーションにする
-        'rgba(54, 162, 235, 0.2)' // TODO: グラデーションにする
-      ],
-      borderWidth: 0,
-      barThickness: 200
-    }
-  ]
-})
-
-const chartOptions = {
-  maintainAspectRatio: false,
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false
-    },
-    tooltip: {
-      callbacks: {
-        title(tooltipItems: TooltipItem<'bar'>[]) {
-          return tooltipItems[0].label
-        },
-        label(tooltipItem: TooltipItem<'bar'>) {
-          const value = tooltipItem.formattedValue
-          return `${value} 円/㎡`
-        }
-      }
-    }
-  },
-  scales: {
-    x: {
-      ticks: {
-        color: 'white',
-        font: {
-          size: 16,
-          weight: 'bold'
-        }
-      },
-      grid: {
-        display: false
-      },
-      border: {
-        color: 'white'
-      }
-    },
-    y: {
-      afterFit(scaleInstance: Scale) {
-        scaleInstance.width = 100 // eslint-disable-line no-param-reassign
-      },
-      ticks: {
-        callback(value: number | string) {
-          return `${new Intl.NumberFormat().format(Number(value))}  `
-        },
-        color: 'white',
-        font: {
-          size: 12
-        }
-      },
-      grid: {
-        display: true,
-        drawOnChartArea: false,
-        drawTicks: true,
-        color: 'white'
-      },
-      border: {
-        color: 'white'
-      }
-    }
-  }
-}
-
-type ChartAreaProps = {
+type GraphAreaProps = {
   estateData?: EstateData
   isLoading: boolean
 }
 
-export const ChartArea = ({ estateData, isLoading }: ChartAreaProps) => {
-  const data = createChartData(estateData)
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
+export const GraphArea = ({ estateData, isLoading }: GraphAreaProps) => {
+  const chartRef = useRef<ChartJS>(null)
+  const [chartData, setChartData] = useState<ChartData<'bar'>>({
+    datasets: []
+  })
+
+  useEffect(() => {
+    const chart = chartRef.current
+
+    if (!chart || !estateData) {
+      return
+    }
+
+    const gradient1 = createGraphGradient(chart.ctx, chart.chartArea, [
+      { stop: 0.34, color: '#009984' },
+      { stop: 0.65, color: '#97BF4A' }
+    ])
+    const gradient2 = createGraphGradient(chart.ctx, chart.chartArea, [
+      { stop: 0.34, color: '#706D65' },
+      { stop: 0.65, color: '#57544C' }
+    ])
+
+    const data = {
+      labels: [estateData.prefName, '全国平均'],
+      datasets: [
+        {
+          data: [estateData.estatePrice, estateData.estatePriceAve],
+          backgroundColor: [gradient1, gradient2],
+          borderWidth: 0,
+          barThickness: 200
+        }
+      ]
+    }
+
+    setChartData(data)
+  }, [estateData])
 
   return (
     <ChartContainer>
@@ -168,7 +125,13 @@ export const ChartArea = ({ estateData, isLoading }: ChartAreaProps) => {
 
       <ChartContent>
         <StyledBaseText className="-small -white">（円/㎡）</StyledBaseText>
-        <Bar data={data} options={chartOptions} />
+        <Chart
+          ref={chartRef}
+          type="bar"
+          data={chartData}
+          options={chartOptions}
+        />
+        ;
       </ChartContent>
 
       {isLoading && <StyledCircularProgress size={100} color="info" />}
