@@ -1,2 +1,2 @@
 export { Form } from './Form'
-export { ChartArea } from './ChartArea'
+export { GraphArea } from './GraphArea'

@@ -4,7 +4,7 @@ import { bgColor } from '@/utils/clients/themeClient'
 import { BaseText } from '@/utils/themes'
 import IconChart from '@/utils/assets/icon_chart.svg'
 import { Divider } from '@/components/Dividers'
-import { ChartArea, Form } from '@/features/components'
+import { GraphArea, Form } from '@/features/components'
 import { EstateData } from '@/utils/types/form'
 
 const ContentContainer = styled('div')`
@@ -58,7 +58,7 @@ export const Main = () => {
       </div>
 
       <ContentWrapper>
-        <ChartArea estateData={estateData} isLoading={isLoading} />
+        <GraphArea estateData={estateData} isLoading={isLoading} />
         <Form
           estateData={estateData}
           setEstateData={setEstateData}
